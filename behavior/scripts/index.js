@@ -70,11 +70,14 @@ exports.handle = (client) => {
     {
       const payslipweek = firstOfEntityRole(client.getMessagePart(),'payslip_week');
       
+   
+      
       if(payslipweek)
       {
        client.updateConversationState({
            payslip_week:payslipweek
         })   
+          console.log(payslipweek.value)
       }
     },
     prompt() {

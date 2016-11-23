@@ -27,40 +27,10 @@ exports.handle = (client) => {
       client.done()
     }
   })
-
-    const confirmStream = client.createStep({
+  
+    const sayGoodBye = client.createStep({
     satisfied() {
-      return Boolean(client.getConversationState().specificPromptSent)
-    },
-    extractInfo()
-    {
-     const itemtype = firstOfEntityRole(client.getMessagePart(), 'item_type');
-     
-     if(itemtype)
-     {
-        client.updateConversationState({
-        item_type: item_type
-      })
-
-     }
-     
-    },
-    prompt() {
-      
-      
-      client.addResponse('prompt/specific',{item_type:client.getConversationState().item_type.value});
-     
-      client.updateConversationState({
-        specificPromptSent: true
-      })
-
-      client.done()
-    }
-  })
-    
-  const goodbye = client.createStep({
-    satisfied() {
-      return false
+      return false;
     },
 
     prompt() {
@@ -69,19 +39,65 @@ exports.handle = (client) => {
     }
   })
 
+    /**** BEGIN PAYSLIP ****/
+    
+    const collectEmployeeNumber = client.createStep({
+    satisfied() {
+    return Boolean(client.getConversationState().employee_number)
+    },
+    exportInfo()
+    {
+      const employeenumber = firstOfEntityRole(client.getMessageParts(),'employee_number');
+      
+      if(employeenumber)
+      {
+       client.updateConversationState({
+           employee_number:employeenumber
+    })   
+      }
+    },
+    prompt() {
+      client.addResponse('prompt/employee_number')
+      client.done()
+    }
+  })
+
+    const collectPayslipWeek = client.createStep({
+    satisfied() {
+    return Boolean(client.getConversationState().payslip_week)
+    },
+    exportInfo()
+    {
+      const payslipweek = firstOfEntityRole(client.getMessageParts(),'payslip_week');
+      
+      if(payslipweek)
+      {
+       client.updateConversationState({
+           payslip_week:payslipweek
+    })   
+      }
+    },
+    prompt() {
+      client.addResponse('prompt/payslip_week')
+      client.done()
+    }
+  })
+    /**** END PAYSLIP ****/
+
   client.runFlow({
     classifications: {
       // map inbound message classifications to names of streams
-        'greeting':'hi'
+        'greeting':'hi',
+        'request/payslip':'payslip'
     },
     autoResponses: {
       // configure responses to be automatically sent as predicted by the machine learning model
     },
     streams: {
-      main: 'hi',
-      hi: [sayHello],
-      play:[confirmStream]
-      end: [goodbye],
+        payslip:[collectEmployeeNumber,collectPayslipWeek]
+        main: 'hi',
+        hi: [sayHello],
+        end: [sayGoodBye],
     },
   })
 }

@@ -1,5 +1,15 @@
 'use strict'
 
+const firstOfEntityRole = function(message, entity, role) {
+  role = role || 'generic';
+
+  const slots = message.slots
+  const entityValues = message.slots[entity]
+  const valsForRole = entityValues ? entityValues.values_by_role[role] : null
+
+  return valsForRole ? valsForRole[0] : null
+}
+
 exports.handle = (client) => {
   // Create steps
   const sayHello = client.createStep({
@@ -18,6 +28,36 @@ exports.handle = (client) => {
     }
   })
 
+    const confirmStream = client.createStep({
+    satisfied() {
+      return Boolean(client.getConversationState().specificPromptSent)
+    },
+    extractInfo()
+    {
+     const itemtype = firstOfEntityRole(client.getMessagePart(), 'item_type');
+     
+     if(itemtype)
+     {
+        client.updateConversationState({
+        item_type: item_type
+      })
+
+     }
+     
+    },
+    prompt() {
+      
+      
+      client.addResponse('prompt/specific',{item_type:client.getConversationState().item_type.value});
+     
+      client.updateConversationState({
+        specificPromptSent: true
+      })
+
+      client.done()
+    }
+  })
+    
   const goodbye = client.createStep({
     satisfied() {
       return false
@@ -40,6 +80,7 @@ exports.handle = (client) => {
     streams: {
       main: 'hi',
       hi: [sayHello],
+      play:[confirmStream]
       end: [goodbye],
     },
   })

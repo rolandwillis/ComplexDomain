@@ -45,9 +45,9 @@ exports.handle = (client) => {
     satisfied() {
     return Boolean(client.getConversationState().employee_number)
     },
-    exportInfo()
+    extractInfo()
     {
-      const employeenumber = firstOfEntityRole(client.getMessageParts(),'employee_number');
+      const employeenumber = firstOfEntityRole(client.getMessagePart(),'employee_number');
       
       if(employeenumber)
       {
@@ -66,15 +66,15 @@ exports.handle = (client) => {
     satisfied() {
     return Boolean(client.getConversationState().payslip_week)
     },
-    exportInfo()
+    extractInfo()
     {
-      const payslipweek = firstOfEntityRole(client.getMessageParts(),'payslip_week');
+      const payslipweek = firstOfEntityRole(client.getMessagePart(),'payslip_week');
       
       if(payslipweek)
       {
        client.updateConversationState({
            payslip_week:payslipweek
-    })   
+        })   
       }
     },
     prompt() {
@@ -94,7 +94,7 @@ exports.handle = (client) => {
       // configure responses to be automatically sent as predicted by the machine learning model
     },
     streams: {
-        payslip:[collectEmployeeNumber,collectPayslipWeek]
+        payslip:[collectEmployeeNumber,collectPayslipWeek],
         main: 'hi',
         hi: [sayHello],
         end: [sayGoodBye],

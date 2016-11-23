@@ -11,4 +11,3 @@ hi
 
 I want to view my [payslips](item_type)
 * request/payslip
-

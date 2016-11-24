@@ -84,6 +84,20 @@ exports.handle = (client) => {
       client.done()
     }
   })
+    
+        const getPayslip = client.createStep({
+    satisfied() {
+    return false
+    },
+    prompt() {
+        let payslip = {
+            employee_number:client.getConversationState().employee_number.value,
+            payslip_week:client.getConversationState().payslip_week.value
+        }
+      client.addResponse('supply/payslip',payslip)
+      client.done()
+    }
+  })
     /**** END PAYSLIP ****/
 
   client.runFlow({
@@ -91,14 +105,16 @@ exports.handle = (client) => {
       // map inbound message classifications to names of streams
         'greeting':'hi',
         'request/payslip':'payslip',
-       // 'provide/employee_number':'payslipweek'
+        'provide/employee_number':'payslipweek',
+        'provide/payslip_week':'providepayslip'
     },
     autoResponses: {
       // configure responses to be automatically sent as predicted by the machine learning model
     },
     streams: {
-        payslip:[collectEmployeeNumber,collectPayslipWeek,sayGoodBye],
+        payslip:[collectEmployeeNumber],
         payslipweek:[collectPayslipWeek],
+        providepayslip:[getPayslip],
         main: 'hi',
         hi: [sayHello],
         end: [sayGoodBye],

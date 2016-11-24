@@ -14,7 +14,7 @@ exports.handle = (client) => {
   // Create steps
   const sayHello = client.createStep({
     satisfied() {
-      return Boolean(client.getConversationState().openPromptSent)
+      return Boolean(client.getConversationState().itemtype)
     },
     extractInfo()
     {
@@ -30,6 +30,7 @@ exports.handle = (client) => {
       next() {
     const itemtype = client.getConversationState().itemtype
     if(itemtype){
+        console.log("the item type is defined as " + itemtype.value);
     switch(itemtype.value)
     {
         case "job":
@@ -45,10 +46,6 @@ exports.handle = (client) => {
          return 'init.proceed'
      }
       client.addResponse('prompt/open')
-     
-      client.updateConversationState({
-        openPromptSent: true
-      })
       client.done()
     }
   })

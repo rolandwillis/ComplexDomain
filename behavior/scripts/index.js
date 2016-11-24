@@ -169,7 +169,16 @@ satisfied() {
 })
 
 const getJobSearchResults = client.createStep({
-    // ...
+satisfied() {
+    return  Boolean(client.getConversationState().jobresults_sent)
+    },
+    prompt() {
+        let jobrole = client.getConversationState().jobrole
+    	let location = client.getConversationState().location
+      client.addResponse('supply/jobsearch_results',{location:location.value,jobrole:jobrole.value})
+	  client.updateConversationState({jobresults_sent:true})
+      client.done()
+    }
 })
     /**** END JOB SEARCH ****/
 
@@ -177,7 +186,7 @@ const getJobSearchResults = client.createStep({
     classifications: {
       // map inbound message classifications to names of streams
         'greeting':'hi',
-        //'request/payslip':'payslip',
+        'request/item':'hi',
 
     },
     autoResponses: {

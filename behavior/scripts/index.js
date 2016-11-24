@@ -105,14 +105,13 @@ exports.handle = (client) => {
       // map inbound message classifications to names of streams
         'greeting':'hi',
         'request/payslip':'payslip',
-        'provide/employee_number':'payslipweek',
-        'provide/payslip_week':'providepayslip'
+
     },
     autoResponses: {
       // configure responses to be automatically sent as predicted by the machine learning model
     },
     streams: {
-        payslip:[collectEmployeeNumber],
+        payslip:[collectEmployeeNumber,collectPayslipWeek,getPayslip],
         payslipweek:[collectPayslipWeek],
         providepayslip:[getPayslip],
         main: 'hi',

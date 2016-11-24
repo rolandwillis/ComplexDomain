@@ -65,10 +65,6 @@ exports.handle = (client) => {
         return "unknown";
     }
     }
-    else
-    {
-        console.log("no item_type was found")
-    }
   },
     prompt() {
      if( client.getConversationState().itemtype)
@@ -251,6 +247,10 @@ satisfied() {
       // map inbound message classifications to names of streams
         'greeting':'hi',
         'request/item':'hi',
+        'provide/job_role':'jobsearch',
+        'provide/job_location':'jobsearch',
+        'provide/employee_number':'payslip',
+        'provide/payslip_week':'payslip'
        // 'goodbye':'end'
 
     },

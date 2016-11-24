@@ -64,6 +64,7 @@ exports.handle = (client) => {
 
     const collectPayslipWeek = client.createStep({
     satisfied() {
+           console.log('Entering satisfied block for payslip');
     return Boolean(client.getConversationState().payslip_week)
     },
     extractInfo()
@@ -91,7 +92,7 @@ exports.handle = (client) => {
     classifications: {
       // map inbound message classifications to names of streams
         'greeting':'hi',
-        'request/payslip':'payslip'
+       // 'request/payslip':'payslip'
     },
     autoResponses: {
       // configure responses to be automatically sent as predicted by the machine learning model

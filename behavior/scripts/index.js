@@ -37,6 +37,8 @@ exports.handle = (client) => {
             return "jobsearch";
         case "payslip":
             return "payslip";
+		default: 
+			return "unknown";
     }
     }
   },
@@ -182,6 +184,16 @@ satisfied() {
 })
     /**** END JOB SEARCH ****/
 
+const unknownItem = client.createStep({
+satisfied() {
+    return false
+    },
+    prompt() {
+      client.addResponse('unknown')
+      client.done()
+    }
+})
+
   client.runFlow({
     classifications: {
       // map inbound message classifications to names of streams
@@ -195,6 +207,7 @@ satisfied() {
     streams: {
         payslip:[collectEmployeeNumber,collectPayslipWeek,getPayslip],
         jobsearch:[collectCity,collectJobType,getJobSearchResults],
+		unknown:[unknownItem],
         main: 'hi',
         hi: [sayHello],
         end: [sayGoodBye],

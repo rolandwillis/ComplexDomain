@@ -67,7 +67,7 @@ exports.handle = (client) => {
     }
     else
     {
-        console.log("no itemtype was found")
+        console.log("no item_type was found")
     }
   },
     prompt() {

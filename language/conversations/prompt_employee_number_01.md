@@ -8,3 +8,9 @@ timestamp: 2016-11-23T21:08:31.141213368Z
 
 My employee number is [123456](employee_number)
 * provide/employee_number
+
+< That's great. Now I need to know which week you want the payslip for?
+* prompt/payslip_week
+
+I need it for weekending [23/07/2001](payslip_week)
+* provide/payslip_week

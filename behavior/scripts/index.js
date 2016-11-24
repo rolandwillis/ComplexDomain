@@ -242,6 +242,16 @@ satisfied() {
     }
 })
 
+const dealWithRudeness = client.createStep({
+satisfied() {
+    return false
+    },
+    prompt() {
+      client.addResponse('unknown')
+      client.done()
+    }
+})
+
   client.runFlow({
     classifications: {
       // map inbound message classifications to names of streams
@@ -250,7 +260,8 @@ satisfied() {
         'provide/job_role':'jobsearch',
         'provide/job_location':'jobsearch', 
         'provide/employee_number':'payslip',
-        'provide/payslip_week':'payslip'
+        'provide/payslip_week':'payslip',
+        'aggressive/rude':'unknown'
        // 'goodbye':'end'
 
     },

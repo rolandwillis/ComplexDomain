@@ -30,7 +30,7 @@ exports.handle = (client) => {
         }
 
 		// Collect any extra info
-		const jobrole = firstOfEntityRole(client.getMessagePart(),'jobrole')
+        const jobrole = firstOfEntityRole(client.getMessagePart(),'jobrole')
         if(jobrole)
         {
          client.updateConversationState({
@@ -38,7 +38,7 @@ exports.handle = (client) => {
          })   
         }
  		
-		const location = firstOfEntityRole(client.getMessagePart(),'location')
+        const location = firstOfEntityRole(client.getMessagePart(),'location')
         if(location)
         {
          client.updateConversationState({
@@ -61,7 +61,7 @@ exports.handle = (client) => {
         case "payslip":
             return "payslip";
 		default: 
-			return "unknown";
+        return "unknown";
     }
     }
   },
@@ -221,7 +221,8 @@ satisfied() {
 		   	location:null,
 			jobrole:null,
 			jobresults_sent:null,
-			payslip_sent:null
+			payslip_sent:null,
+                        itemtype:null
 
     	})  
       client.addResponse('unknown')
@@ -234,7 +235,8 @@ satisfied() {
       // map inbound message classifications to names of streams
         'greeting':'hi',
         'request/item':'hi',
-		'goodbye':'end'
+        'provide/job_role':'jobsearch'
+       // 'goodbye':'end'
 
     },
     autoResponses: {
@@ -243,7 +245,7 @@ satisfied() {
     streams: {
         payslip:[collectEmployeeNumber,collectPayslipWeek,getPayslip],
         jobsearch:[collectCity,collectJobType,getJobSearchResults],
-		unknown:[unknownItem],
+        unknown:[unknownItem],
         main: 'hi',
         hi: [sayHello],
         end: [sayGoodBye],

@@ -14,6 +14,7 @@ exports.handle = (client) => {
   // Create steps
   const sayHello = client.createStep({
     satisfied() {
+     
       return Boolean(client.getConversationState().itemtype)
     },
     extractInfo()
@@ -83,6 +84,17 @@ exports.handle = (client) => {
 
     prompt() {
       client.addResponse('goodbye/final')
+      	  // Clear down data to allow for new item requests
+       client.updateConversationState({
+           	employee_number:null,
+			payslip_week:null,
+		   	location:null,
+			jobrole:null,
+			jobresults_sent:null,
+			payslip_sent:null,
+                        itemtype:null
+
+    	})  
       client.done()
     }
   })
@@ -235,7 +247,8 @@ satisfied() {
       // map inbound message classifications to names of streams
         'greeting':'hi',
         'request/item':'hi',
-        'provide/job_role':'jobsearch'
+        'provide/job_role':'jobsearch',
+        'provide/job_location':'jobsearch'
        // 'goodbye':'end'
 
     },

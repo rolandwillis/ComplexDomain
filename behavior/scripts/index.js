@@ -16,14 +16,39 @@ exports.handle = (client) => {
     satisfied() {
       return Boolean(client.getConversationState().openPromptSent)
     },
-
+    extractInfo()
+    {
+        const itemtype = firstOfEntityRole(client.getMessagePart(),'item_type')
+        if(itemtype)
+        {
+         client.updateConversationState({
+             itemtype:itemtype
+        })
+         console.log("item type is " + itemtype.value);
+        }
+    },
+      next() {
+    const itemtype = client.getConversationState().itemtype
+    if(itemtype){
+    switch(itemtype.value)
+    {
+        case "job":
+            return "jobsearch";
+        case "payslip":
+            return "payslip";
+    }
+    }
+  },
     prompt() {
+     if( client.getConversationState().itemtype)
+     {
+         return 'init.proceed'
+     }
       client.addResponse('prompt/open')
      
       client.updateConversationState({
         openPromptSent: true
       })
-
       client.done()
     }
   })
@@ -57,8 +82,9 @@ exports.handle = (client) => {
       }
     },
     prompt() {
-      client.addResponse('prompt/employee_number')
-      client.done()
+       client.addResponse('prompt/employee_number')
+       client.expect('payslip', ['provide/employee_number'])
+       client.done()
     }
   })
 
@@ -81,6 +107,7 @@ exports.handle = (client) => {
     },
     prompt() {
       client.addResponse('prompt/payslip_week')
+      client.expect('payslip', ['provide/payslip_week'])
       client.done()
     }
   })
@@ -102,12 +129,58 @@ exports.handle = (client) => {
     }
   })
     /**** END PAYSLIP ****/
+    
+    /**** BEGIN JOB SEARCH ****/
+const collectCity = client.createStep({
+ satisfied() {
+    return Boolean(client.getConversationState().location)
+    },
+    extractInfo(){
+        const location = firstOfEntityRole(client.getMessagePart(),'location')
+        if(location)
+        {
+         client.updateConversationState({
+             location:location
+         })   
+        }
+    },
+    prompt() {
+        
+      client.addResponse('prompt/job_location')
+      client.done()
+    }
+})
+
+const collectJobType = client.createStep({
+satisfied() {
+    return Boolean(client.getConversationState().jobrole)
+    },
+    extractInfo(){
+        const jobrole = firstOfEntityRole(client.getMessagePart(),'jobrole')
+        if(jobrole)
+        {
+         client.updateConversationState({
+             jobrole:jobrole
+         })   
+        }
+    },
+    prompt() {
+        
+      client.addResponse('prompt/job_role')
+      client.done()
+    }
+})
+
+const getJobSearchResults = client.createStep({
+    // ...
+})
+    /**** END JOB SEARCH ****/
 
   client.runFlow({
     classifications: {
       // map inbound message classifications to names of streams
         'greeting':'hi',
-        'request/payslip':'payslip',
+        //'request/payslip':'payslip',
 
     },
     autoResponses: {
@@ -115,6 +188,7 @@ exports.handle = (client) => {
     },
     streams: {
         payslip:[collectEmployeeNumber,collectPayslipWeek,getPayslip],
+        jobsearch:[collectCity,collectJobType,getJobSearchResults],
         main: 'hi',
         hi: [sayHello],
         end: [sayGoodBye],

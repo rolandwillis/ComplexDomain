@@ -9,8 +9,8 @@ hi
 < How can I be of assistance today?
 * prompt/open
 
-I want to view my [payslips](item_type)
-* request/payslip
+I want to view my [payslip](item_type)
+* request/item
 
 < Ok, to start with I will need your employee number.
 * prompt/employee_number

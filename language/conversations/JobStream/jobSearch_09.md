@@ -15,5 +15,5 @@ i want a [job](item_type)
 < Ok, to start with I will need your current location.
 * prompt/job_location
 
-i'm in [London](location)
+[London](location)
 * provide/job_location

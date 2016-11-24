@@ -248,7 +248,9 @@ satisfied() {
         'greeting':'hi',
         'request/item':'hi',
         'provide/job_role':'jobsearch',
-        'provide/job_location':'jobsearch'
+        'provide/job_location':'jobsearch',
+        'provide/employee_number':'payslip',
+        'provide/payslip_week':'payslip'
        // 'goodbye':'end'
 
     },

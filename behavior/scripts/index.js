@@ -70,9 +70,7 @@ exports.handle = (client) => {
     extractInfo()
     {
       const payslipweek = firstOfEntityRole(client.getMessagePart(),'payslip_week');
-      
-   
-      
+
       if(payslipweek)
       {
        client.updateConversationState({
@@ -92,13 +90,15 @@ exports.handle = (client) => {
     classifications: {
       // map inbound message classifications to names of streams
         'greeting':'hi',
-       // 'request/payslip':'payslip'
+        'request/payslip':'payslip',
+       // 'provide/employee_number':'payslipweek'
     },
     autoResponses: {
       // configure responses to be automatically sent as predicted by the machine learning model
     },
     streams: {
-        payslip:[collectEmployeeNumber,collectPayslipWeek],
+        payslip:[collectEmployeeNumber,collectPayslipWeek,sayGoodBye],
+        payslipweek:[collectPayslipWeek],
         main: 'hi',
         hi: [sayHello],
         end: [sayGoodBye],

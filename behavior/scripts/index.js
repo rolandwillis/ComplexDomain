@@ -85,9 +85,9 @@ exports.handle = (client) => {
     }
   })
     
-        const getPayslip = client.createStep({
+    const getPayslip = client.createStep({
     satisfied() {
-    return false
+    return Boolean(client.getConversationState().payslip_sent)
     },
     prompt() {
         let payslip = {
@@ -95,6 +95,9 @@ exports.handle = (client) => {
             payslip_week:client.getConversationState().payslip_week.value
         }
       client.addResponse('supply/payslip',payslip)
+      client.updateConversationState({
+          payslip_sent:true
+    })
       client.done()
     }
   })
@@ -112,8 +115,6 @@ exports.handle = (client) => {
     },
     streams: {
         payslip:[collectEmployeeNumber,collectPayslipWeek,getPayslip],
-        payslipweek:[collectPayslipWeek],
-        providepayslip:[getPayslip],
         main: 'hi',
         hi: [sayHello],
         end: [sayGoodBye],

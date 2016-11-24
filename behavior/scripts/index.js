@@ -19,6 +19,8 @@ exports.handle = (client) => {
     extractInfo()
     {
         const itemtype = firstOfEntityRole(client.getMessagePart(),'item_type')
+ 	//	let baseClassification = client.getMessagePart().classification.base_type.value
+	//	console.log("message classification received is :" + baseClassification)
         if(itemtype)
         {
          client.updateConversationState({
@@ -26,6 +28,24 @@ exports.handle = (client) => {
         })
          console.log("item type is " + itemtype.value);
         }
+
+		// Collect any extra info
+		const jobrole = firstOfEntityRole(client.getMessagePart(),'jobrole')
+        if(jobrole)
+        {
+         client.updateConversationState({
+             jobrole:jobrole
+         })   
+        }
+ 		
+		const location = firstOfEntityRole(client.getMessagePart(),'location')
+        if(location)
+        {
+         client.updateConversationState({
+             location:location
+         })   
+        }
+
     },
       next() {
     const itemtype = client.getConversationState().itemtype
@@ -33,6 +53,7 @@ exports.handle = (client) => {
         console.log("the item type is defined as " + itemtype.value);
     switch(itemtype.value)
     {
+		case "jobs":
         case "job":
             return "jobsearch";
         case "payslip":
@@ -48,6 +69,7 @@ exports.handle = (client) => {
          return 'init.proceed'
      }
       client.addResponse('prompt/open')
+	 // client.expect('end','goodbye');
       client.done()
     }
   })
@@ -189,6 +211,17 @@ satisfied() {
     return false
     },
     prompt() {
+
+	  // Clear down data to allow for new item requests
+       client.updateConversationState({
+           	employee_number:null,
+			payslip_week:null,
+		   	location:null,
+			jobrole:null,
+			jobresults_sent:null,
+			payslip_sent:null
+
+    	})  
       client.addResponse('unknown')
       client.done()
     }
@@ -199,6 +232,7 @@ satisfied() {
       // map inbound message classifications to names of streams
         'greeting':'hi',
         'request/item':'hi',
+		'goodbye':'end'
 
     },
     autoResponses: {

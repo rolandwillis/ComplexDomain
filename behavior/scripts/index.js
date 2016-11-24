@@ -53,7 +53,9 @@ exports.handle = (client) => {
         console.log("the item type is defined as " + itemtype.value);
     switch(itemtype.value)
     {
-		case "jobs":
+        case "jobs":
+        case "role":
+        case "roles":
         case "job":
             return "jobsearch";
         case "payslip":

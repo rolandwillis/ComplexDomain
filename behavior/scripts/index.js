@@ -72,7 +72,7 @@ exports.handle = (client) => {
          return 'init.proceed'
      }
       client.addResponse('prompt/open')
-	 // client.expect('end','goodbye');
+
       client.done()
     }
   })

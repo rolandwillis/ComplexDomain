@@ -46,6 +46,23 @@ exports.handle = (client) => {
              location:location
          })   
         }
+        
+        		// Collect any extra info
+        const employeenumber = firstOfEntityRole(client.getMessagePart(),'employee_number')
+        if(employeenumber)
+        {
+         client.updateConversationState({
+             employeenumber:employeenumber
+         })   
+        }
+ 		
+        const payslipweek= firstOfEntityRole(client.getMessagePart(),'payslip_week')
+        if(payslipweek)
+        {
+         client.updateConversationState({
+             payslipweek:payslipweek
+         })   
+        }
 
     },
       next() {
@@ -109,9 +126,12 @@ exports.handle = (client) => {
       }
     },
     prompt() {
+        let baseClassification = client.getMessagePart().classification.base_type.value
+        console.log("base classification is :" + baseClassification);
+        
        client.addResponse('prompt/employee_number')
        client.expect('payslip', ['provide/employee_number'])
- 	   client.expect('end', ['greeting','decline'])
+       client.expect('end', ['greeting','decline'])
        client.done()
     }
   })
@@ -134,6 +154,9 @@ exports.handle = (client) => {
       }
     },
     prompt() {
+      
+      let baseClassification = client.getMessagePart().classification.base_type.value
+      console.log("base classification is :" + baseClassification);
       client.addResponse('prompt/payslip_week')
       client.expect('payslip', ['provide/payslip_week'])
   	  client.expect('end', ['greeting','decline'])

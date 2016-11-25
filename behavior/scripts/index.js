@@ -12,7 +12,7 @@ const firstOfEntityRole = function(message, entity, role) {
 
 exports.handle = (client) => {
   // Create steps
-  const sayHello = client.createStep({
+  const getRequestItem = client.createStep({
     satisfied() {
      
       return Boolean(client.getConversationState().itemtype)
@@ -20,8 +20,8 @@ exports.handle = (client) => {
     extractInfo()
     {
         const itemtype = firstOfEntityRole(client.getMessagePart(),'item_type')
- 	//	let baseClassification = client.getMessagePart().classification.base_type.value
-	//	console.log("message classification received is :" + baseClassification)
+ 		let baseClassification = client.getMessagePart().classification.base_type.value
+		console.log("message classification received is :" + baseClassification)
         if(itemtype)
         {
          client.updateConversationState({
@@ -59,6 +59,7 @@ exports.handle = (client) => {
         case "roles":
         case "job":
             return "jobsearch";
+		case "payslips":
         case "payslip":
             return "payslip";
 		default: 
@@ -85,17 +86,8 @@ exports.handle = (client) => {
     prompt() {
       client.addResponse('goodbye/final')
       	  // Clear down data to allow for new item requests
-       client.updateConversationState({
-           	employee_number:null,
-			payslip_week:null,
-		   	location:null,
-			jobrole:null,
-			jobresults_sent:null,
-			payslip_sent:null,
-                        itemtype:null
-
-    	})  
-      client.done()
+            client.resetConversationState()
+     		client.done()
     }
   })
 
@@ -119,6 +111,7 @@ exports.handle = (client) => {
     prompt() {
        client.addResponse('prompt/employee_number')
        client.expect('payslip', ['provide/employee_number'])
+ 	   client.expect('end', ['greeting','decline'])
        client.done()
     }
   })
@@ -143,6 +136,7 @@ exports.handle = (client) => {
     prompt() {
       client.addResponse('prompt/payslip_week')
       client.expect('payslip', ['provide/payslip_week'])
+  	  client.expect('end', ['greeting','decline'])
       client.done()
     }
   })
@@ -227,17 +221,9 @@ satisfied() {
     prompt() {
 
 	  // Clear down data to allow for new item requests
-       client.updateConversationState({
-           	employee_number:null,
-			payslip_week:null,
-		   	location:null,
-			jobrole:null,
-			jobresults_sent:null,
-			payslip_sent:null,
-                        itemtype:null
-
-    	})  
+ 
       client.addResponse('unknown')
+      client.resetConversationState()
       client.done()
     }
 })
@@ -254,15 +240,15 @@ satisfied() {
 
   client.runFlow({
     classifications: {
-      // map inbound message classifications to names of streams
-        'greeting':'hi',
-        'request/item':'hi',
-        'provide/job_role':'jobsearch',
-        'provide/job_location':'jobsearch', 
-        'provide/employee_number':'payslip',
-        'provide/payslip_week':'payslip',
-        'aggressive/rude':'unknown'
-       // 'goodbye':'end'
+       // map inbound message classifications to names of streams
+        'greeting':'processRequestItem',
+        'request/item':'processRequestItem',
+       // 'provide/job_role':'jobsearch',
+       // 'provide/job_location':'jobsearch', 
+       // 'provide/employee_number':'payslip',
+       // 'provide/payslip_week':'payslip',
+       // 'aggressive/rude':'unknown'
+        'goodbye':'end'
 
     },
     autoResponses: {
@@ -272,8 +258,8 @@ satisfied() {
         payslip:[collectEmployeeNumber,collectPayslipWeek,getPayslip],
         jobsearch:[collectCity,collectJobType,getJobSearchResults],
         unknown:[unknownItem],
-        main: 'hi',
-        hi: [sayHello],
+        main: 'processRequestItem',
+        processRequestItem: [getRequestItem],
         end: [sayGoodBye],
     },
   })

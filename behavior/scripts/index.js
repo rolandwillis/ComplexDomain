@@ -127,9 +127,15 @@ exports.handle = (client) => {
     },
     prompt() {
         let baseClassification = client.getMessagePart().classification.base_type.value
-        console.log("base classification is :" + baseClassification);
-        
+         let subClassification = client.getMessagePart().classification.sub_type.value
+        console.log("i have determined the classification as :" + baseClassification + "/" + subClassification);
+        console.log("Users : " + client.getUsers().length);
+        if(subClassification!="delay")
        client.addResponse('prompt/employee_number')
+       else
+       {
+           client.addTextResponse("Sure no problem" + ". Let me know when you are ready")
+       }
        client.expect('payslip', ['provide/employee_number'])
        client.expect('end', ['greeting','decline'])
        client.done()
@@ -236,6 +242,32 @@ satisfied() {
     }
 })
     /**** END JOB SEARCH ****/
+    
+    
+    /**** BEGIN CANDIDATE SEARCH ****/ 
+    
+    const collectRoleName = client.createStep({
+    satisfied() {
+    return Boolean(client.getConversationState().jobrole)
+    },
+    extractInfo(){
+        const jobrole = firstOfEntityRole(client.getMessagePart(),'jobrole')
+        if(jobrole)
+        {
+         client.updateConversationState({
+             jobrole:jobrole
+         })   
+        }
+    },
+    prompt() {
+        
+      client.addResponse('prompt/job_role')
+      client.done()
+    }
+})
+    
+    
+    /**** END CANDIDATE SEARCH ****/
 
 const unknownItem = client.createStep({
 satisfied() {

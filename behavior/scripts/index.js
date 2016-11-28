@@ -19,6 +19,15 @@ exports.handle = (client) => {
     },
     extractInfo()
     {
+        if(client.getUsers()=="undefined"){
+            console.log("Creating user roland")
+      client.updateUser("roland","id","someguid")
+        }
+      else
+      {
+          console.log("User " + client.getUsers())
+      }
+        
         const itemtype = firstOfEntityRole(client.getMessagePart(),'item_type')
  		let baseClassification = client.getMessagePart().classification.base_type.value
 		console.log("message classification received is :" + baseClassification)

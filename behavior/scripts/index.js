@@ -25,7 +25,7 @@ exports.handle = (client) => {
         }
       else
       {
-          console.log("User " + client.getUsers())
+          console.log("User " + client.getUsers().first().id)
       }
         
         const itemtype = firstOfEntityRole(client.getMessagePart(),'item_type')

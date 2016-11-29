@@ -11,6 +11,13 @@ const firstOfEntityRole = function(message, entity, role) {
 }
 
 exports.handle = (client) => {
+    
+    const users = client.getUsers()
+     var keys = Object.keys( users );
+     const user =   users[keys[0]];
+    const util = require('util')
+
+console.log(util.inspect(users, {showHidden: false, depth: null}))
   // Create steps
   const getRequestItem = client.createStep({
     satisfied() {
@@ -19,14 +26,11 @@ exports.handle = (client) => {
     },
     extractInfo()
     {
-        if(client.getUsers()=="undefined"){
-            console.log("Creating user roland")
-      client.updateUser("roland","id","someguid")
+        if(user!="undefined"){
+            console.log("user id is: %s",user.id)
+    //  client.updateUser("roland","id","someguid")
         }
-      else
-      {
-          console.log("User " + client.getUsers())
-      }
+
         
         const itemtype = firstOfEntityRole(client.getMessagePart(),'item_type')
  		let baseClassification = client.getMessagePart().classification.base_type.value

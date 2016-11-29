@@ -111,7 +111,7 @@ exports.handle = (client) => {
     },
 
     prompt() {
-      client.addResponse('goodbye/final')
+      client.addResponse('goodbye/final',{first_name:user.first_name})
       	  // Clear down data to allow for new item requests
             client.resetConversationState()
            // client.resetUser()

@@ -72,11 +72,7 @@ exports.handle = (client) => {
 
     },
       next() {
-		  console.log("User First Name is %s",user.first_name)
-		  if(user.first_name=="undefined" || user.first_name=="")
-		  {
-			  return "get_user_first_name";
-		  }
+	
 		  
     const itemtype = client.getConversationState().itemtype
     if(itemtype){
@@ -308,19 +304,35 @@ satisfied() {
 const getUserFirstName = client.createStep({
 	
 	satisfied(){
-		return user.first_name != "undefined" &&  user.first_name!="";
+            console.log("in getUserFirstName - is first_name found = " + Boolean(user.first_name != "undefined" &&  user.first_name!=""))
+		return Boolean(user.first_name != "undefined" &&  user.first_name!="");
 	},
 	extractInfo(){
 		   const first_name = firstOfEntityRole(client.getMessagePart(),'first_name')
 		   if(first_name)
 		   {
 				client.updateUser(user.id,"first_name",first_name);
-	   }
+                   }
+	   
 		
 	},
+        next()
+        {
+            return "processRequestItem";
+        },
 	prompt(){
-		client.addResponse("request/first_name");
-		client.expect("prompt/open",["provide/first_name"])
+           
+               if(user.first_name == "undefined" ||  user.first_name=="")
+		client.addResponse("prompt/first_name");
+               else
+               {
+                   console.log('calling init.proceed')
+                   return 'init.proceed'
+               }
+                   
+                client.done();
+                    
+		//client.expect("processRequestItem",["provide/first_name"])
 		
 	}
 	
@@ -331,6 +343,7 @@ const getUserFirstName = client.createStep({
        // map inbound message classifications to names of streams
         'greeting':'processRequestItem',
         'request/item':'processRequestItem',
+       // 'provide/first_name':'processRequestItem'
        // 'provide/job_role':'jobsearch',
        // 'provide/job_location':'jobsearch', 
        // 'provide/employee_number':'payslip',
@@ -343,12 +356,11 @@ const getUserFirstName = client.createStep({
       // configure responses to be automatically sent as predicted by the machine learning model
     },
     streams: {
-		get_user_first_name:[getUserFirstName],
         payslip:[collectEmployeeNumber,collectPayslipWeek,getPayslip],
         jobsearch:[collectCity,collectJobType,getJobSearchResults],
         unknown:[unknownItem],
         main: 'processRequestItem',
-        processRequestItem: [getRequestItem],
+        processRequestItem: [getUserFirstName,getRequestItem],
         end: [sayGoodBye],
     },
   })

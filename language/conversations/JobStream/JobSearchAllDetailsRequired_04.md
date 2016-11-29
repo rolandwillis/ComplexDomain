@@ -6,6 +6,12 @@ timestamp: 2016-11-24T20:25:30.183069772Z
 hi
 * greeting
 
+< Before we start, what name do you go by?
+* prompt/first_name
+
+[Roland](first_name)
+* provide/first_name
+
 < How can I be of assistance today [Roland](first_name)?
 * prompt/open
 

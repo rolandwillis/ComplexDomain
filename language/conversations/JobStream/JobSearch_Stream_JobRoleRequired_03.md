@@ -5,7 +5,7 @@ timestamp: 2016-11-23T20:55:34.103785391Z
 Hi
 * greeting
 
-< Hiya, how can I help?
+< Hiya [Roland](first_name), how can I help?
 * prompt/open
 
 Im looking for a [job](item_type) in [Liverpool](location)

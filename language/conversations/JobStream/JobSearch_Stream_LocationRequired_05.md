@@ -5,7 +5,7 @@ timestamp: 2016-11-23T20:55:34.103785391Z
 Hi
 * greeting
 
-< Hi there, is there something I can help you with?
+< Hi there [Roland](first_name), is there something I can help you with?
 * prompt/open
 
 Im looking for a [c#](jobrole) [job](item_type)

@@ -6,7 +6,7 @@ timestamp: 2016-11-24T20:25:30.183069772Z
 hi
 * greeting
 
-< How can I be of assistance today?
+< How can I be of assistance today [Roland](first_name)?
 * prompt/open
 
 im looking for a [job](item_type)

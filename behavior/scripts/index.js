@@ -15,9 +15,7 @@ exports.handle = (client) => {
     const users = client.getUsers()
      var keys = Object.keys( users );
      const user =   users[keys[0]];
-    const util = require('util')
 
-console.log(util.inspect(users, {showHidden: false, depth: null}))
   // Create steps
   const getRequestItem = client.createStep({
     satisfied() {
@@ -102,7 +100,7 @@ console.log(util.inspect(users, {showHidden: false, depth: null}))
      {
          return 'init.proceed'
      }
-      client.addResponse('prompt/open')
+      client.addResponse('prompt/open',{first_name:user.first_name})
 
       client.done()
     }
@@ -249,7 +247,7 @@ satisfied() {
     prompt() {
         let jobrole = client.getConversationState().jobrole
     	let location = client.getConversationState().location
-      client.addResponse('supply/jobsearch_results',{location:location.value,jobrole:jobrole.value})
+      client.addResponse('supply/jobsearch_results',{location:location.value,jobrole:jobrole.value,first_name:user.first_name})
 	  client.updateConversationState({jobresults_sent:true})
       client.done()
     }

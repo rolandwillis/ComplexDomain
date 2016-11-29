@@ -5,7 +5,7 @@ timestamp: 2016-11-23T20:55:34.103785391Z
 Hiya
 * greeting
 
-< Hello there :) What's up?
+< Hello there [Roland](first_name) :) What's up?
 * prompt/open
 
 I'm looking for [jobs](item_type) near [Luton](location)

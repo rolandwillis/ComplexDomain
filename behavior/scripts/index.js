@@ -15,6 +15,8 @@ exports.handle = (client) => {
     var users = client.getUsers()
      var keys = Object.keys( users );
      var user =   users[keys[0]];
+     
+    // client.resetUser(user.id);
 
   // Create steps
   const getRequestItem = client.createStep({
@@ -97,7 +99,7 @@ exports.handle = (client) => {
      {
          return 'init.proceed'
      }
-      client.addResponse('prompt/open',{first_name:user.first_name})
+      client.addResponse('prompt/open',{first_name:user.first_name?user.first_name:user.first_name})
 
       client.done()
     }
@@ -112,6 +114,7 @@ exports.handle = (client) => {
       client.addResponse('goodbye/final')
       	  // Clear down data to allow for new item requests
             client.resetConversationState()
+           // client.resetUser()
      		client.done()
     }
   })
@@ -139,7 +142,7 @@ exports.handle = (client) => {
         console.log("i have determined the classification as :" + baseClassification + "/" + subClassification);
         console.log("Users : " + client.getUsers().length);
         if(subClassification!="delay")
-       client.addResponse('prompt/employee_number')
+       client.addResponse('prompt/employee_number',{first_name:user.first_name})
        else
        {
            client.addTextResponse("Sure no problem" + ". Let me know when you are ready")
@@ -171,7 +174,7 @@ exports.handle = (client) => {
       
       let baseClassification = client.getMessagePart().classification.base_type.value
       console.log("base classification is :" + baseClassification);
-      client.addResponse('prompt/payslip_week')
+      client.addResponse('prompt/payslip_week',{first_name:user.first_name})
       client.expect('payslip', ['provide/payslip_week'])
   	  client.expect('end', ['greeting','decline'])
       client.done()
@@ -185,7 +188,8 @@ exports.handle = (client) => {
     prompt() {
         let payslip = {
             employee_number:client.getConversationState().employee_number.value,
-            payslip_week:client.getConversationState().payslip_week.value
+            payslip_week:client.getConversationState().payslip_week.value,
+            first_name:user.first_name
         }
       client.addResponse('supply/payslip',payslip)
       client.updateConversationState({
@@ -244,7 +248,8 @@ satisfied() {
     prompt() {
         let jobrole = client.getConversationState().jobrole
     	let location = client.getConversationState().location
-      client.addResponse('supply/jobsearch_results',{location:location.value,jobrole:jobrole.value,first_name:user.first_name})
+    	let jobcount = Math.floor(Math.random() * (20 - 1) + 1);
+      client.addResponse('supply/jobsearch_results',{location:location.value,jobrole:jobrole.value,first_name:user.first_name,jobcount:jobcount})
 	  client.updateConversationState({jobresults_sent:true})
       client.done()
     }
@@ -305,13 +310,24 @@ const getUserFirstName = client.createStep({
 	
 	satisfied(){
             console.log("in getUserFirstName - is first_name found = " + Boolean(user.first_name != "undefined" &&  user.first_name!=""))
-		return Boolean(user.first_name != "undefined" &&  user.first_name!="");
+		return Boolean((user.first_name != "undefined" &&  user.first_name!="") || client.getConversationState().first_name);
 	},
 	extractInfo(){
 		   const first_name = firstOfEntityRole(client.getMessagePart(),'first_name')
+               
 		   if(first_name)
 		   {
-				client.updateUser(user.id,"first_name",first_name);
+                        console.log("Received First Name of %s",first_name.value)
+                        client.updateUser(user.id,"first_name",first_name.value);
+                        console.log("Updated user and now first name is %s : ",user.first_name)
+                        client.updateConversationState({
+                            
+                            first_name:first_name.value
+                        })
+                   }
+                   else
+                   {
+                       console.log("No name found in response")
                    }
 	   
 		

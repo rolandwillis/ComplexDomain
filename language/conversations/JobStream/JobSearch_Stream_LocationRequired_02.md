@@ -23,7 +23,7 @@ I'm currently looking for [developer](jobrole) [jobs](item_type) at the moment
 I'm staying in [Luton](location) at the moment
 * provide/job_location
 
-< Good news! I found some [developer](jobrole) jobs in and around [Luton](location). Take a look.
+< Good news! I found some [developer](jobrole) jobs in and around [Luton](location). Take a look [Roland](first_name).
 * supply/jobsearch_results
 
 Thanks

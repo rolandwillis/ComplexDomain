@@ -23,7 +23,7 @@ Im looking for a [c#](jobrole) [job](item_type)
 I'm living in [Luton](location) at the moment
 * provide/job_location
 
-< Good news! I found some [developer](jobrole) jobs in and around [Luton](location). Take a look.
+< Good news [Roland](first_name)! I found some [developer](jobrole) jobs in and around [Luton](location). Take a look.
 * supply/jobsearch_results
 
 Thanks

@@ -216,7 +216,7 @@ const collectCity = client.createStep({
     },
     prompt() {
         
-      client.addResponse('prompt/job_location')
+      client.addResponse('prompt/job_location',{first_name:user.first_name})
       client.done()
     }
 })
@@ -236,7 +236,7 @@ satisfied() {
     },
     prompt() {
         
-      client.addResponse('prompt/job_role')
+      client.addResponse('prompt/job_role',{first_name:user.first_name})
       client.done()
     }
 })

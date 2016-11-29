@@ -12,9 +12,9 @@ const firstOfEntityRole = function(message, entity, role) {
 
 exports.handle = (client) => {
     
-    const users = client.getUsers()
+    var users = client.getUsers()
      var keys = Object.keys( users );
-     const user =   users[keys[0]];
+     var user =   users[keys[0]];
 
   // Create steps
   const getRequestItem = client.createStep({
@@ -24,11 +24,6 @@ exports.handle = (client) => {
     },
     extractInfo()
     {
-        if(user!="undefined"){
-            console.log("user id is: %s",user.id)
-    //  client.updateUser("roland","id","someguid")
-        }
-
         
         const itemtype = firstOfEntityRole(client.getMessagePart(),'item_type')
  		let baseClassification = client.getMessagePart().classification.base_type.value
@@ -77,6 +72,12 @@ exports.handle = (client) => {
 
     },
       next() {
+		  console.log("User First Name is %s",user.first_name)
+		  if(user.first_name=="undefined" || user.first_name=="")
+		  {
+			  return "get_user_first_name";
+		  }
+		  
     const itemtype = client.getConversationState().itemtype
     if(itemtype){
         console.log("the item type is defined as " + itemtype.value);
@@ -304,6 +305,27 @@ satisfied() {
     }
 })
 
+const getUserFirstName = client.createStep({
+	
+	satisfied(){
+		return user.first_name != "undefined" &&  user.first_name!="";
+	},
+	extractInfo(){
+		   const first_name = firstOfEntityRole(client.getMessagePart(),'first_name')
+		   if(first_name)
+		   {
+				client.updateUser(user.id,"first_name",first_name);
+	   }
+		
+	},
+	prompt(){
+		client.addResponse("request/first_name");
+		client.expect("prompt/open",["provide/first_name"])
+		
+	}
+	
+})
+
   client.runFlow({
     classifications: {
        // map inbound message classifications to names of streams
@@ -321,6 +343,7 @@ satisfied() {
       // configure responses to be automatically sent as predicted by the machine learning model
     },
     streams: {
+		get_user_first_name:[getUserFirstName],
         payslip:[collectEmployeeNumber,collectPayslipWeek,getPayslip],
         jobsearch:[collectCity,collectJobType,getJobSearchResults],
         unknown:[unknownItem],

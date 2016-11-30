@@ -11,7 +11,7 @@ const firstOfEntityRole = function(message, entity, role) {
 }
 
 exports.handle = (client) => {
-    const applicationEnvironment = getCurrentApplicationEnvironment()
+    const applicationEnvironment = client.getCurrentApplicationEnvironment()
 console.log(applicationEnvironment)
     var users = client.getUsers()
      var keys = Object.keys( users );

@@ -17,7 +17,7 @@ Hi
 Do you have any [developer](jobrole) [jobs](item_type) at the moment
 * request/item
 
-< Let me know where you live and I'll try and find something near to you?
+< Let me know where you live [Roland](first_name) and I'll try and find something near to you?
 * prompt/job_location
 
 I'm living in [Luton](location) at the moment

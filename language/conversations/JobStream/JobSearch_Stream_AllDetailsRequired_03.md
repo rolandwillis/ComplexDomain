@@ -17,19 +17,19 @@ Is anyone there?
 I want a [job](item_type)
 * request/item
 
-< Okeydoke, to narrow it down a bit, can you tell me where you live?
+< Okeydoke [Roland](first_name), to narrow it down a bit, can you tell me where you live?
 * prompt/job_location
 
 I'm living in [Luton](location) at the moment
 * provide/job_location
 
-< What type of role you are interested in?
+< What type of role you are interested in [Roland](first_name)?
 * prompt/job_role
 
 I want a [senior java dev](jobrole) job.
 * provide/job_role
 
-< OK. i found some [senior java dev](jobrole) jobs in and around [Luton](location) 
+< OK [Roland](first_name). i found some [senior java dev](jobrole) jobs in and around [Luton](location) 
 * supply/jobsearch_results
 
 Thanks

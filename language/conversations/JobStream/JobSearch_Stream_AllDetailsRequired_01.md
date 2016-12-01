@@ -17,13 +17,13 @@ hi
 Im after a [job](item_type)
 * request/item
 
-< Okeydoke, let's see what I can do. To narrow the search down a bit, let's start with your home town and I'll go from there.
+< Okeydoke [Roland](first_name), let's see what I can do. To narrow the search down a bit, let's start with your home town and I'll go from there.
 * prompt/job_location
 
 I live in [London](location)
 * provide/job_location
 
-< What type of job you are looking for?
+< What type of job you are looking for [Roland](first_name)?
 * prompt/job_role
 
 Im looking ideally for [Engineering](jobrole) jobs

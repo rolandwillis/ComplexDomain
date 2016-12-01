@@ -17,13 +17,13 @@ Hiya
 I'm looking for [jobs](item_type) near [Luton](location)
 * request/item
 
-< Ok. What kind of job role are you looking for?
+< Ok. What kind of job role are you looking for [Roland](first_name)?
 * prompt/job_role
 
 [developer](jobrole) jobs preferably
 * provide/job_role
 
-< I found some [developer](jobrole) jobs in and around [Luton](location). Take a look.
+< I found some [developer](jobrole) jobs in and around [Luton](location). Take a look [Roland](first_name).
 * supply/jobsearch_results
 
 Thanks

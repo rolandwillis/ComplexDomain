@@ -16,9 +16,9 @@ hi, have you got any [jobs](item_type) in [Berkshire](location)?
 * prompt/job_role
 
 [engineering](jobrole)
-* provide/job_location
+* provide/job_role
 
-< Good news! I found some [engineering](jobrole) jobs in and around [Berkshire](location). Take a look.
+< Good news [Roland](first_name)! I found some [engineering](jobrole) jobs in and around [Berkshire](location). Take a look.
 * supply/jobsearch_results
 
 thanks

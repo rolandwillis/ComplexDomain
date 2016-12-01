@@ -11,8 +11,7 @@ const firstOfEntityRole = function(message, entity, role) {
 }
 
 exports.handle = (client) => {
-    const applicationEnvironment = client.getCurrentApplicationEnvironment()
-console.log(applicationEnvironment)
+
     var users = client.getUsers()
      var keys = Object.keys( users );
      var user =   users[keys[0]];
@@ -27,7 +26,7 @@ console.log(applicationEnvironment)
     },
     extractInfo()
     {
-        
+
         const itemtype = firstOfEntityRole(client.getMessagePart(),'item_type')
  		let baseClassification = client.getMessagePart().classification.base_type.value
 		console.log("message classification received is :" + baseClassification)

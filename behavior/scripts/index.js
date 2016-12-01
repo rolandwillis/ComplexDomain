@@ -360,8 +360,8 @@ const getUserFirstName = client.createStep({
         'greeting':'processRequestItem',
         'request/item':'processRequestItem',
        // 'provide/first_name':'processRequestItem'
-       // 'provide/job_role':'jobsearch',
-       // 'provide/job_location':'jobsearch', 
+        'provide/job_role':'jobsearch',
+        'provide/job_location':'jobsearch', 
        // 'provide/employee_number':'payslip',
        // 'provide/payslip_week':'payslip',
        // 'aggressive/rude':'unknown'

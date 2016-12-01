@@ -18,7 +18,7 @@ Im looking for a [job](item_type) in [Liverpool](location)
 * request/item
 
 < Ok. What kind of job are you looking for?
-* prompt/job_location
+* prompt/job_role
 
 [developer](jobrole)?
 * provide/job_role

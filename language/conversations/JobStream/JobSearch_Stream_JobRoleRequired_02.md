@@ -18,7 +18,7 @@ I want a [job](item_type) near [Luton](location)
 * request/item
 
 < Ok. What kind of job are you looking for?
-* prompt/job_location
+* prompt/job_role
 
 Ideally I would like a [developer](jobrole) job
 * provide/job_role

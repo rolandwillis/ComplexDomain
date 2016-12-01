@@ -13,7 +13,7 @@ hi, have you got any [jobs](item_type) in [Berkshire](location)?
 * provide/first_name
 
 < Please could you tell me what type of job you are looking for [Roland](first_name)?
-* prompt/job_location
+* prompt/job_role
 
 [engineering](jobrole)
 * provide/job_location
